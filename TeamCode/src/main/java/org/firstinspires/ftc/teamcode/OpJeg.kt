@@ -61,7 +61,7 @@ class OpJeg : LinearOpMode() {
         val LB = hardwareMap.dcMotor["LB"]
         val RF = hardwareMap.dcMotor["RF"]
         val RB = hardwareMap.dcMotor["RB"]
-        val Slide = hardwareMap.dcMotor["Slide"]
+        val Slide = hardwareMap.get(DcMotorEx::class.java, "Slide")
         val RidicareIntake = hardwareMap.servo["RidicareIntake"]
         val Intake = hardwareMap.get(DcMotorEx::class.java, "Intake")
         val ticks = 2786.2
@@ -92,6 +92,15 @@ class OpJeg : LinearOpMode() {
         LB.direction = DcMotorSimple.Direction.REVERSE
         RidicareIntake.position = 0.33
         var Incetinire = 1.0
+
+
+
+
+        var slidConditionUp : Boolean = false
+        var slidConditionDown : Boolean = false
+
+
+
 
         waitForStart()
         if (isStopRequested) return
@@ -128,19 +137,6 @@ class OpJeg : LinearOpMode() {
                 }
             }
 
-           // if(gamepad2.a) {
-             //   Slide.setTargetPosition(PozSlide)
-               // Slide.mode = DcMotor.RunMode.RUN_TO_POSITION
-                //Slide.power = 0.5
-            //}
-
-
-            Slide.power = gamepad2.left_stick_y.toDouble()
-
-
-
-
-
 
 
             val tp = TelemetryPacket()
@@ -148,9 +144,66 @@ class OpJeg : LinearOpMode() {
 
             FtcDashboard.getInstance().sendTelemetryPacket(tp)
 
+            //slide SUUUUUUUUUUUUUUUUUUUUUUUUUS
+            if(gamepad2.right_bumper){
 
 
-            Test2.position = ServoTest
+
+                slidConditionUp = true
+                slidConditionDown = false
+
+
+
+            }
+
+            if(slidConditionUp && Slide.currentPosition <= 2040){
+                Slide.targetPosition = 2040
+                Slide.mode = DcMotor.RunMode.RUN_TO_POSITION
+                Slide.power = 0.75
+
+
+
+
+            }
+            else if(Slide.currentPosition > 2040 && slidConditionDown == false
+
+                ){
+                slidConditionUp = false
+                Slide.power = 0.0
+            }
+
+
+
+            //SLIDE JOOOOOOOOOOOOOOOOOOOOOOOS
+            if(gamepad2.left_bumper){
+
+
+
+                slidConditionDown = true
+                slidConditionUp = false
+
+
+
+            }
+
+            if(slidConditionDown && Slide.currentPosition >= 1){
+                Slide.targetPosition = 0
+                Slide.mode = DcMotor.RunMode.RUN_TO_POSITION
+                Slide.power = 0.75
+
+
+
+            }
+            else if(Slide.currentPosition < 1 && slidConditionUp == false){
+                slidConditionDown = false
+                Slide.power = 0.0
+            }
+
+
+
+
+
+
 
 
 
