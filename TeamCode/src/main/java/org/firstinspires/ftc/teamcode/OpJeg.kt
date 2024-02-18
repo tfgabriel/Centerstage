@@ -8,13 +8,17 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
+import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.teamcode.MotoareCheck.LBC
 import org.firstinspires.ftc.teamcode.MotoareCheck.LFC
 import org.firstinspires.ftc.teamcode.MotoareCheck.RBC
 import org.firstinspires.ftc.teamcode.MotoareCheck.RFC
 import org.firstinspires.ftc.teamcode.Teste.PozSlide
 import org.firstinspires.ftc.teamcode.Teste.SBPoz
-import org.firstinspires.ftc.teamcode.Teste.ServoTest
+import org.firstinspires.ftc.teamcode.Teste.SSDPoz
+import org.firstinspires.ftc.teamcode.Teste.SSPoz
+import org.firstinspires.ftc.teamcode.Teste.SSSPoz
+
 
 import org.firstinspires.ftc.teamcode.Teste.pSlide
 
@@ -44,7 +48,13 @@ object  Teste{
     var SBPoz = 0.0
 
     @JvmField
-    var ServoTest = 0.0
+    var SSSPoz = 0.0
+
+    @JvmField
+    var SSDPoz = 0.0
+
+    @JvmField
+    var SSPoz = 0.0
 
 }
 
@@ -67,7 +77,7 @@ class OpJeg : LinearOpMode() {
         val ticks = 2786.2
         var newTarget: Double
         val ServoBucket = hardwareMap.servo["ServoBucket"]
-        val Test2 = hardwareMap.servo["Test2"]
+        val RoataBucket = hardwareMap.crservo["RoataBucket"]
 
 
 
@@ -82,6 +92,7 @@ class OpJeg : LinearOpMode() {
 
 
 
+
         val slidePID = PID(pSlide)
 
         // Reverse the right side motors. This may be wrong for your setup.
@@ -93,11 +104,20 @@ class OpJeg : LinearOpMode() {
         RidicareIntake.position = 0.33
         var Incetinire = 1.0
 
+        val ServoSlideStanga = hardwareMap.servo["ServoSlideStanga"]
+        val ServoSlideDreapta = hardwareMap.servo["ServoSlideDreapta"]
 
 
+        ServoSlideDreapta.direction = Servo.Direction.REVERSE
 
         var slidConditionUp : Boolean = false
         var slidConditionDown : Boolean = false
+
+        ServoBucket.position = 0.25
+        ServoSlideDreapta.position = 0.15
+        ServoSlideStanga.position = 0.52
+
+
 
 
 
@@ -126,16 +146,32 @@ class OpJeg : LinearOpMode() {
 
 
             if(gamepad2.left_trigger >= 0.01){
-                Intake.power = -1.0
+                Intake.power = -0.7
+
+
             }
             else{
                 if(gamepad2.right_trigger >= 0.01){
-                    Intake.power= 1.0
+                    Intake.power= 0.7
+                    RoataBucket.power = -1.0
+
                 }
                 else{
                     Intake.power = 0.0
+
+
                 }
             }
+            if(gamepad2.dpad_down){
+                RoataBucket.power = 0.7
+
+            }
+            else if(gamepad2.dpad_up){
+                RoataBucket.power = 0.0
+            }
+
+
+
 
 
 
@@ -165,9 +201,7 @@ class OpJeg : LinearOpMode() {
 
 
             }
-            else if(Slide.currentPosition > 2040 && slidConditionDown == false
-
-                ){
+            else if(Slide.currentPosition > 2040 && slidConditionDown == false){
                 slidConditionUp = false
                 Slide.power = 0.0
             }
@@ -186,7 +220,7 @@ class OpJeg : LinearOpMode() {
 
             }
 
-            if(slidConditionDown && Slide.currentPosition >= 1){
+            if(slidConditionDown && Slide.currentPosition >= 0){
                 Slide.targetPosition = 0
                 Slide.mode = DcMotor.RunMode.RUN_TO_POSITION
                 Slide.power = 0.75
@@ -197,6 +231,22 @@ class OpJeg : LinearOpMode() {
             else if(Slide.currentPosition < 1 && slidConditionUp == false){
                 slidConditionDown = false
                 Slide.power = 0.0
+            }
+
+
+
+            
+
+
+           if(gamepad2.a){
+               ServoBucket.position = 0.25
+               ServoSlideDreapta.position = 0.15
+               ServoSlideStanga.position = 0.52
+           }
+            if(gamepad2.y){
+                ServoBucket.position = 0.28
+                ServoSlideDreapta.position = 0.62
+                ServoSlideStanga.position = 0.59
             }
 
 
