@@ -14,6 +14,7 @@ lateinit var cam : CamGirl
     override fun runOpMode() {
 
 
+
         val LF = hardwareMap.dcMotor["LF"]
         val LB = hardwareMap.dcMotor["LB"]
         val RF = hardwareMap.dcMotor["RF"]
@@ -69,6 +70,9 @@ lateinit var cam : CamGirl
 
 
         waitForStart()
+
+
+        MiscareFata()
 
 
 
