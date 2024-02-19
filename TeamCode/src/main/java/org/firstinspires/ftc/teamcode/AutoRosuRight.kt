@@ -6,10 +6,11 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.Servo
+import org.firstinspires.ftc.teamcode.hardware.CamGirl
 
 @Autonomous
 class AutoRosuRight :LinearOpMode(){
-
+lateinit var cam : CamGirl
     override fun runOpMode() {
 
 
@@ -65,6 +66,8 @@ class AutoRosuRight :LinearOpMode(){
 
 
 
+
+
         waitForStart()
 
 
@@ -75,7 +78,7 @@ class AutoRosuRight :LinearOpMode(){
 
     }
 
-    class
+
 
 
 }

@@ -67,6 +67,7 @@ class OpJeg : LinearOpMode() {
     override fun runOpMode() {
         // Declare our motors
         // Make sure your ID's match your configuration
+
         val LF = hardwareMap.dcMotor["LF"]
         val LB = hardwareMap.dcMotor["LB"]
         val RF = hardwareMap.dcMotor["RF"]
@@ -78,6 +79,9 @@ class OpJeg : LinearOpMode() {
         var newTarget: Double
         val ServoBucket = hardwareMap.servo["ServoBucket"]
         val RoataBucket = hardwareMap.crservo["RoataBucket"]
+
+
+
 
 
 
@@ -125,6 +129,7 @@ class OpJeg : LinearOpMode() {
         waitForStart()
         if (isStopRequested) return
         while (opModeIsActive()) {
+
             val y = -gamepad1.left_stick_y.toDouble() // Remember, Y stick value is reversed
             val x = gamepad1.left_stick_x * 1.1 // Counteract imperfect strafing
             val rx = gamepad1.right_stick_x.toDouble()
@@ -248,9 +253,11 @@ class OpJeg : LinearOpMode() {
                 ServoSlideDreapta.position = 0.62
                 ServoSlideStanga.position = 0.59
             }
-
-
-
+            if(gamepad2.b){
+                Slide.power = 0.0
+                slidConditionDown = false
+                slidConditionUp = false
+            }
 
 
 
