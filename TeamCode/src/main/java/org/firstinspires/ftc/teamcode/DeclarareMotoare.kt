@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
+import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
-import org.firstinspires.ftc.teamcode.utils.RobotFuncs.hardwareMap
+
 
 object DeclarareMotoare{
 
@@ -32,14 +34,14 @@ object DeclarareMotoare{
     @JvmStatic
     lateinit var  ServoSlideDreapta : Servo
 
-
-
+    lateinit var  lom: LinearOpMode
+    lateinit var  hardwareMap : HardwareMap
 
 
     @JvmStatic
-    fun initMotoare() {
-
-
+    fun initMotoare(lom : LinearOpMode) {
+        this.lom = lom
+        hardwareMap = lom.hardwareMap
         LF = hardwareMap.dcMotor["LF"]
         LB = hardwareMap.dcMotor["LB"]
         RF = hardwareMap.dcMotor["RF"]
@@ -65,8 +67,8 @@ object DeclarareMotoare{
         Slide.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         Slide.mode = DcMotor.RunMode.RUN_USING_ENCODER
 
-        LF.direction = DcMotorSimple.Direction.REVERSE
-        LB.direction = DcMotorSimple.Direction.REVERSE
+        RF.direction = DcMotorSimple.Direction.REVERSE
+        RB.direction = DcMotorSimple.Direction.REVERSE
 
         RidicareIntake.position = 0.33
 
@@ -77,7 +79,7 @@ object DeclarareMotoare{
         ServoSlideDreapta.direction = Servo.Direction.REVERSE
 
         ServoBucket.position = 0.25
-        ServoSlideDreapta.position = 0.15
+         ServoSlideDreapta.position = 0.15
         ServoSlideStanga.position = 0.52
 
 

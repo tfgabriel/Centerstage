@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.Teste.SSPoz
 import org.firstinspires.ftc.teamcode.Teste.SSSPoz
 
 
-import org.firstinspires.ftc.teamcode.Teste.pSlide
+
 
 
 @Config
@@ -41,8 +41,8 @@ object  Teste{
     @JvmField
     var PozSlide = 0
 
-    @JvmField
-    var pSlide = PIDFCoef(0.0, 0.0, 0.0, 0.0)
+
+
 
     @JvmField
     var SBPoz = 0.0
@@ -97,7 +97,7 @@ class OpJeg : LinearOpMode() {
 
 
 
-        val slidePID = PID(pSlide)
+
 
         // Reverse the right side motors. This may be wrong for your setup.
         // If your robot moves backwards when commanded to go forwards,
