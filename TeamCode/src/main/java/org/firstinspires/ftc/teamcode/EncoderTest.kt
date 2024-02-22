@@ -12,11 +12,8 @@ import com.qualcomm.robotcore.hardware.DcMotor
 
 class EncoderTest : LinearOpMode() {
 
-
     @Throws(InterruptedException::class)
     override fun runOpMode() {
-
-
 
         val slideTest = hardwareMap.dcMotor["Slide"]
 
@@ -24,43 +21,16 @@ class EncoderTest : LinearOpMode() {
         slideTest.mode =  DcMotor.RunMode.RUN_USING_ENCODER
         slideTest.zeroPowerBehavior =DcMotor.ZeroPowerBehavior.BRAKE
 
-
         waitForStart()
         if (isStopRequested) return
         while (opModeIsActive()) {
-
-
-
-
             slideTest.power = gamepad2.left_stick_y.toDouble()
-
-
-
-
-
-
 
             val tp = TelemetryPacket()
             tp.put("slideTestCurPos", slideTest.currentPosition)
 
             FtcDashboard.getInstance().sendTelemetryPacket(tp)
 
-
-
         }
-
-
-
-
-
-
-
-
     }
-
-
-
-
-
-
 }

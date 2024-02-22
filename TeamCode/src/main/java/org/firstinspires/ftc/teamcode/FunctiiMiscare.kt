@@ -1,19 +1,17 @@
 package org.firstinspires.ftc.teamcode
 
+import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.DeclarareMotoare.LB
 import org.firstinspires.ftc.teamcode.DeclarareMotoare.LF
 import org.firstinspires.ftc.teamcode.DeclarareMotoare.RB
 import org.firstinspires.ftc.teamcode.DeclarareMotoare.RF
+import org.firstinspires.ftc.teamcode.varsandfuncs.mathfuncs
 
 
 object FunctiiMiscare{
 
 
     fun MiscareVerticala(putere : Double = 0.0) {
-
-
-
-
 
 
         val y = -putere
@@ -36,6 +34,40 @@ object FunctiiMiscare{
 
 
     }
+
+    //
+    fun move(maxtime: Double, autoresult: Int){
+        lateinit var elapsedTime: ElapsedTime
+
+        if(autoresult == 0){
+            //ma duc la tras
+            elapsedTime.startTime()
+            while(maxtime > elapsedTime.time()){
+                LF.power = mathfuncs.min(elapsedTime.seconds() / maxtime, 1.0)
+                RB.power = mathfuncs.min(elapsedTime.seconds() / maxtime, 1.0)
+            }
+            elapsedTime.reset()
+        } else if(autoresult == 1){
+            //ma duc in fata
+            elapsedTime.startTime()
+            while(maxtime > elapsedTime.time()){
+                LF.power = mathfuncs.min(elapsedTime.seconds() / maxtime, 1.0)
+                LB.power = mathfuncs.min(elapsedTime.seconds() / maxtime, 1.0)
+                RF.power = mathfuncs.min(elapsedTime.seconds() / maxtime, 1.0)
+                RB.power = mathfuncs.min(elapsedTime.seconds() / maxtime, 1.0)
+            }
+            elapsedTime.reset()
+        } else {
+            //ma duc in alta parte
+            elapsedTime.startTime()
+            while(maxtime > elapsedTime.time()){
+                RF.power = mathfuncs.min(elapsedTime.seconds() / maxtime, 1.0)
+                LB.power = mathfuncs.min(elapsedTime.seconds() / maxtime, 1.0)
+            }
+            elapsedTime.reset()
+        }
+    }
+
 
 
     fun MiscareDeRotire(putere: Double){

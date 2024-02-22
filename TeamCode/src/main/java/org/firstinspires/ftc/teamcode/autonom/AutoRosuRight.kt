@@ -1,18 +1,17 @@
-package org.firstinspires.ftc.teamcode
+package org.firstinspires.ftc.teamcode.autonom
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import org.firstinspires.ftc.teamcode.DeclarareMotoare
+import org.firstinspires.ftc.teamcode.FunctiiMiscare
 
 @Autonomous
 class AutoRosuRight : LinearOpMode() {
     override fun runOpMode() {
         DeclarareMotoare.initMotoare(this)
-
-
-
-
-
-
+        //open camera
+        //getautoresult
+        //closecamera
 
         waitForStart()
 
@@ -23,6 +22,8 @@ class AutoRosuRight : LinearOpMode() {
         FunctiiMiscare.MiscareDeRotire(1.0)
 
         sleep(200)
+
+
 
 
     }

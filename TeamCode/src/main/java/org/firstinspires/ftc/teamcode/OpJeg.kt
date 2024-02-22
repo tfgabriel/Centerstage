@@ -20,9 +20,6 @@ import org.firstinspires.ftc.teamcode.Teste.SSPoz
 import org.firstinspires.ftc.teamcode.Teste.SSSPoz
 
 
-
-
-
 @Config
 object MotoareCheck {
     @JvmField
@@ -33,16 +30,11 @@ object MotoareCheck {
     var RFC = 1
     @JvmField
     var RBC = 1
-
-
 }
 @Config
 object  Teste{
     @JvmField
     var PozSlide = 0
-
-
-
 
     @JvmField
     var SBPoz = 0.0
@@ -57,7 +49,6 @@ object  Teste{
     var SSPoz = 0.0
 
 }
-
 
 
 @TeleOp(name="Lu adi nu-i placea numele vechi 3:c")
@@ -80,12 +71,6 @@ class OpJeg : LinearOpMode() {
         val ServoBucket = hardwareMap.servo["ServoBucket"]
         val RoataBucket = hardwareMap.crservo["RoataBucket"]
 
-
-
-
-
-
-
         LF.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         LB.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         RF.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
@@ -93,11 +78,6 @@ class OpJeg : LinearOpMode() {
         Slide.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         Slide.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         Slide.mode = DcMotor.RunMode.RUN_USING_ENCODER
-
-
-
-
-
 
         // Reverse the right side motors. This may be wrong for your setup.
         // If your robot moves backwards when commanded to go forwards,
@@ -120,10 +100,6 @@ class OpJeg : LinearOpMode() {
         ServoBucket.position = 0.25
         ServoSlideDreapta.position = 0.15
         ServoSlideStanga.position = 0.52
-
-
-
-
 
 
         waitForStart()
@@ -152,19 +128,14 @@ class OpJeg : LinearOpMode() {
 
             if(gamepad2.left_trigger >= 0.01){
                 Intake.power = -0.7
-
-
             }
             else{
                 if(gamepad2.right_trigger >= 0.01){
                     Intake.power= 0.7
                     RoataBucket.power = -1.0
-
                 }
                 else{
                     Intake.power = 0.0
-
-
                 }
             }
             if(gamepad2.dpad_down){
@@ -175,11 +146,6 @@ class OpJeg : LinearOpMode() {
                 RoataBucket.power = 0.0
             }
 
-
-
-
-
-
             val tp = TelemetryPacket()
             tp.put("SlideCurPos", Slide.currentPosition)
 
@@ -187,62 +153,35 @@ class OpJeg : LinearOpMode() {
 
             //slide SUUUUUUUUUUUUUUUUUUUUUUUUUS
             if(gamepad2.right_bumper){
-
-
-
                 slidConditionUp = true
                 slidConditionDown = false
-
-
-
             }
 
             if(slidConditionUp && Slide.currentPosition <= 2040){
                 Slide.targetPosition = 2040
                 Slide.mode = DcMotor.RunMode.RUN_TO_POSITION
                 Slide.power = 0.75
-
-
-
-
             }
             else if(Slide.currentPosition > 2040 && slidConditionDown == false){
                 slidConditionUp = false
                 Slide.power = 0.0
             }
 
-
-
             //SLIDE JOOOOOOOOOOOOOOOOOOOOOOOS
             if(gamepad2.left_bumper){
-
-
-
                 slidConditionDown = true
                 slidConditionUp = false
-
-
-
             }
 
             if(slidConditionDown && Slide.currentPosition >= 0){
                 Slide.targetPosition = 0
                 Slide.mode = DcMotor.RunMode.RUN_TO_POSITION
                 Slide.power = 0.75
-
-
-
             }
             else if(Slide.currentPosition < 1 && slidConditionUp == false){
                 slidConditionDown = false
                 Slide.power = 0.0
             }
-
-
-
-            
-
-
            if(gamepad2.a){
                ServoBucket.position = 0.25
                ServoSlideDreapta.position = 0.15
@@ -258,19 +197,6 @@ class OpJeg : LinearOpMode() {
                 slidConditionDown = false
                 slidConditionUp = false
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
     }
 }

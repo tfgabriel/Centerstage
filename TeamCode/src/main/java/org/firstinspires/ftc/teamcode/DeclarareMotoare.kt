@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
-import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
+import org.firstinspires.ftc.teamcode.varsandfuncs.vars.hardwareMap
 
 
 object DeclarareMotoare{
@@ -33,9 +33,8 @@ object DeclarareMotoare{
     lateinit var  ServoSlideStanga : Servo
     @JvmStatic
     lateinit var  ServoSlideDreapta : Servo
-
-    lateinit var  lom: LinearOpMode
-    lateinit var  hardwareMap : HardwareMap
+    @JvmStatic
+    lateinit var lom : LinearOpMode
 
 
     @JvmStatic
