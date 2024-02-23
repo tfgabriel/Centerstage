@@ -8,4 +8,12 @@ object mathfuncs {
             a
         }
     }
+
+    fun max(a: Double, b: Double): Double{
+        return if(a > b){
+            a
+        } else{
+            b
+        }
+    }
 }

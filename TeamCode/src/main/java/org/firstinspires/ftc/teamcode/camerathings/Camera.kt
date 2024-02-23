@@ -13,7 +13,7 @@ import java.lang.Thread.sleep
 
 //imi creez o camera
 //am nevoie sa imi declar rezolutia ei, numele ei, pipelineul pe care il va urmari, si sa pot sa controlez din dash daca ii dau stream
-//mai am nevoie si de waitforopen pentru ca camera se porneste mai greu decat restul, asa ca o sa trebuiasca sa fac o sincronizeze
+//mai am nevoie si de waitforopen pentru ca pana sa o ia robotu de nebun tre sa astepte camera sa calculeze autoresultu din pipeline
 class Camera(name: String, resolutionx: Int, resolutiony: Int, pipeline: OpenCvPipeline, streaming: Boolean, waitforopen: Boolean) {
 
     //cateva variabile stupide, ai sa vezi de ce le folosesc
@@ -32,7 +32,7 @@ class Camera(name: String, resolutionx: Int, resolutiony: Int, pipeline: OpenCvP
         val webcamName: WebcamName = hardwareMap.get(WebcamName::class.java, name)
         camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId)
 
-        //insert pipeline nebun
+
         camera.setPipeline(pipeline)
 
         dashboardStreaming = streaming
@@ -58,7 +58,7 @@ class Camera(name: String, resolutionx: Int, resolutiony: Int, pipeline: OpenCvP
             }
         }
 
-        //aici sincronizez camera cu restul
+        //aici asincronizez camera
         camera.openCameraDeviceAsync(cameraListener)
         synccamwithlom(waitforopen, lom)
     }
@@ -73,9 +73,9 @@ class Camera(name: String, resolutionx: Int, resolutiony: Int, pipeline: OpenCvP
         }
     }
 
-    //functia de sincronizare
+    //functia de asincronizare
     private fun synccamwithlom(waitforopen: Boolean, lom: LinearOpMode){
-        //astept cate 5 milisecunde pana cand se deschide camera
+        //astept cate 5 milisecunde pana cand se calculeaza pipelineul
         while(waitforopen && !opened && !lom.isStarted && !lom.isStopRequested){
             lom.telemetry.addLine("Waiting on cam open")
             lom.telemetry.update()
