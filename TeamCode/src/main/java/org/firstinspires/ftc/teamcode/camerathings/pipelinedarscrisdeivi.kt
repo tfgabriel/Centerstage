@@ -37,35 +37,48 @@ import kotlin.math.PI
 //apoi la sfarsit compara numarul de patrate din fiecare sectiune si iti da cazul
 class pipelinedarscrisdeivi(resolutionx: Int, resolutiony: Int): OpenCvPipeline(){
 
+    //iti dau eu sa citesti si sa iti explic cate ceva despre documentatia de pipeline, opencv si frameuri
+    //functia in care lucrez si verific lucrurile din frame (de acum, mat = frameul cu care lucrez)
     override fun processFrame(input: Mat): Mat {
+
         if(input.empty()){
             return input
         }
+        //vreauframe pur si simplu ma ajuta sa controlez daca fac grila si patratele din dash
         if(vreauframe){
+
+            //imi mut frameul din rgb in hsv pentru a prelucra culorile
             val frametohsv = Mat()
             input.copyTo(frametohsv)
             Imgproc.cvtColor(frametohsv, frametohsv, Imgproc.COLOR_RGB2HSV)
 
+            //la fel ca la frame, aici controlez din dash daca desenez patratele
             val finalframe = Mat()
             if(desenezpatrate){
 
                 frametohsv.copyTo(finalframe)
             }
 
+            //aici retin cate patrate de culoarea pe care o vreau sunt in fiecare parte
             var patrateincentru: Int = 0
             var patrateladreapta: Int = 0
 
+            //aici imi pun patratele in grila, ca sa intelegi, o sa iti arat o foaie [CAND VII LA ROBO]
             for(patratpelungime in -patratepelungime+offx .. patratepelungime+offx step step ){
                 for(patratpelatime in -patratepelatime+offy .. patratepelatime+offy step step){
 
+                    //patratul efectiv
                     val patrat = frametohsv[patratpelungime, patratpelatime] ?: continue
 
+                    //verific culoarea
                     if(operatiicupatrate.verificaculoarea(patrat)){
+                        //verific unde sunt patratele in functie de o linie in care impart frameul
                         if(patratpelungime > cazuldemijloc)
                             patrateladreapta++
                         else
                             patrateincentru++
 
+                        //daca desenez patrate, le pun culorile respective (daca am patrat de culoare dorita, il pun pe alb
                         if(desenezpatrate)
                             Imgproc.rectangle(finalframe, Rect(patratpelungime, patratpelatime, step, step), Scalar(
                                 max(patrat[0]-10.0, 0.0),
@@ -75,6 +88,7 @@ class pipelinedarscrisdeivi(resolutionx: Int, resolutiony: Int): OpenCvPipeline(
                             )
 
                     }else{
+                        //daca nu e ce culoare vreau dar totusi desenez patrate, desenez patratul de culoare neagra
                         if(desenezpatrate){
                             Imgproc.rectangle(finalframe, Rect(patratpelungime, patratpelatime, step, step), Scalar(255.0, 255.0, 255.0))
                         }
@@ -85,6 +99,7 @@ class pipelinedarscrisdeivi(resolutionx: Int, resolutiony: Int): OpenCvPipeline(
                     lom.telemetry.addData("Patrate in centru", patrateladreapta)
                     lom.telemetry.update()
 
+                    //autoresultul, iti explic de ce sunt cum sunt cazurile [CAND VII LA ROBO]
                     autoresult = if(autored){
                         if(patrateladreapta > patrateminrosii)
                             0
@@ -104,6 +119,7 @@ class pipelinedarscrisdeivi(resolutionx: Int, resolutiony: Int): OpenCvPipeline(
                     lom.telemetry.addData("GOT RESULTS: ", autoresult)
                     lom.telemetry.update()
 
+                    //linia care imi imparte cazurile (dreapta centru stanga)
                     val w = frametohsv.width()
                     Imgproc.line(finalframe, Point(cazuldemijloc, 80.0), Point(cazuldemijloc, 320.0), Scalar(182.0, 23.0, 240.0), 4)
                 }
@@ -134,6 +150,7 @@ object operatiicupatrate{
 
     fun isred(patrat: DoubleArray): Boolean{
 
+        //transform culorile primite din rgb in hsv o sa iti arat cum functioneaza [CAND VII LA ROBO]
         val diferentadeunghirosu: Double = PI/9
         val saturatierosieminima: Double = 50.0
         val valoarerosiemaxima: Double = 35.0
@@ -146,6 +163,8 @@ object operatiicupatrate{
     }
 
     fun isblue(patrat: DoubleArray): Boolean{
+
+        //transform culorile primite din rgb in hsv o sa iti arat cum functioneaza [CAND VII LA ROBO]
         val diferentadeunghialbastruinstanga: Double = PI/6
         val diferentadeunghialbastruindreapta: Double = PI/12
         val saturatiealbastraminima: Double = 50.0
@@ -160,41 +179,76 @@ object operatiicupatrate{
 }
 
 //imi definesc aici niste variabile cu care o sa lucrez prin pipeline
-object CameraObjects{
 
-    @JvmField
-    var desenezpatrate: Boolean = true
+//Can we pretend that
+//Airplanes in the night sky are like
+//Shooting stars? I could really use a
+//Wish right now, wish right now
+//Wish right now, can we pretend that
+//Airplanes in the night sky are like
+//Shooting stars? I could really use a
+//Wish right now, wish right now
+//Wish right now (Yeah)
 
-    @JvmField
-    var patratepelungime: Int = 0
+//I could use a dream or a genie or a wish
+//To go back to a place much simpler than this
+//'Cause after all the partyin' and smashin' and crashin'
+//And all the glitz and the glam and the fashion
+//And all the pandemonium and all the madness
+//There comes a time where you fade to the blackness
+//And when you starin' at that phone in your lap
+//And you hopin', but them people never call you back
+//But that's just how the story unfolds
+//You get another hand soon after you fold
+//And when your plans unravellin', they're sayin'
+//"What would you wish for if you had one chance?"
+//So airplane, airplane, sorry, I'm late
+//I'm on my way, so don't close that gate
+//If I don't make that, then I switch my flight
+//And I'll be right back at it by the end of the night
 
-    @JvmField
-    var patratepelatime: Int = 0
+//Can we pretend that
+//Airplanes in the night sky are like
+//Shooting stars? (Shooting stars) I could really use a
+//Wish right now, wish right now
+//Wish right now, can we pretend that
+//Airplanes in the night sky are like
+//Shooting stars? (Shooting stars) I could really use a
+//Wish right now, wish right now
+//Wish right now (Yeah, yeah)
 
-    @JvmField
-    var offx: Int = 0
+//Somebody take me back to the days
+//Before this was a job, before I got paid
+//Before it ever mattered what I had in my bank
+//Yeah, back when I was tryna get a tip at Subway
+//And back when I was rappin' for the hell of it
+//But, nowadays, we rappin' to stay relevant
+//I'm guessin' that if we can make some wishes outta airplanes
+//Then maybe, oh, maybe I'll go back to the days (Days)
+//Before the politics that we call the rap game
+//And back when ain't nobody listen to my mixtape
+//And back before I tried to cover up my slang
+//But this is for Decatur—what's up, Bobby Ray?
+//So, can I get a wish to end the politics? (Oh)
+//And get back to the music that started this shit?
+//So here I stand, and then again, I say
+//I'm hopin' we can make some wishes out of airplanes
 
-    @JvmField
-    var offy: Int = 0
+//Can we pretend that
+//Airplanes in the night sky are like
+//Shooting stars? (Shooting stars) I could really use a
+//Wish right now, wish right now
+//Wish right now, can we pretend that
+//Airplanes in the night sky are like
+//Shooting stars? (Shooting stars) I could really use a
+//Wish right now, wish right now
+//Wish right now
 
-    @JvmField
-    var step: Int = 0
-
-    @JvmField
-    var cazuldemijloc: Double = 0.0
-
-    @JvmField
-    var patrateminrosii: Int = 0
-
-    @JvmField
-    var patrateminalbastre: Int = 0
-
-    @JvmField
-    var autored: Boolean = true
-
-    @JvmField
-    var autoresult: Int = 1
-
-    @JvmField
-    var vreauframe: Boolean = true
-}
+//I could really use a wish right now
+//(Oh, oh, oh, oh)
+//I, I, I could really use a wish right now
+//(Mm) Like, like
+//Like shooting stars (Ah)
+//I, I could
+//I could, I could really use a wish right now
+//A wish, a wish right now (A wish right now)
