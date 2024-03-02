@@ -85,7 +85,7 @@ class OpJeg : LinearOpMode() {
         // See the note about this earlier on this page.
         LF.direction = DcMotorSimple.Direction.REVERSE
         LB.direction = DcMotorSimple.Direction.REVERSE
-        RidicareIntake.position = 0.33
+        RidicareIntake.position = 0.60
         var Incetinire = 1.0
 
         val ServoSlideStanga = hardwareMap.servo["ServoSlideStanga"]
@@ -97,9 +97,7 @@ class OpJeg : LinearOpMode() {
         var slidConditionUp : Boolean = false
         var slidConditionDown : Boolean = false
 
-        ServoBucket.position = 0.25
-        ServoSlideDreapta.position = 0.15
-        ServoSlideStanga.position = 0.52
+
 
 
         waitForStart()

@@ -1,5 +1,10 @@
 package org.firstinspires.ftc.teamcode.camerathings
 
+import com.acmerobotics.dashboard.FtcDashboard
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket
+import org.firstinspires.ftc.teamcode.DeclarareMotoare.lom
+import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.alabastruAng
+import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.alabastruMaxDiff
 import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.autored
 import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.autoresult
 import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.cazuldemijloc
@@ -7,21 +12,29 @@ import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
 import org.openftc.easyopencv.OpenCvPipeline
 import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.desenezpatrate
+import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.diferentadeunghirosu
 import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.offx
 import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.offy
 import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.patrateminalbastre
 import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.patrateminrosii
 import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.patratepelatime
 import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.patratepelungime
+import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.rosuAng
+import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.rosuMaxDif
+import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.saturatiealbastraminima
+import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.saturatierosieminima
 import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.step
+import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.valoarealbastramaxima
+import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.valoarerosieminima
 import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.vreauframe
 import org.firstinspires.ftc.teamcode.varsandfuncs.mathfuncs.max
 import org.opencv.core.Rect
 import org.opencv.core.Scalar
-import org.firstinspires.ftc.teamcode.varsandfuncs.vars.lom
 import org.opencv.core.Point
 import kotlin.math.PI
-
+import kotlin.math.abs
+import kotlin.math.floor
+import kotlin.math.log
 
 
 //vreau sa imi impart o parte din ceea ce vede camera in o grila cu patrate
@@ -32,30 +45,31 @@ import kotlin.math.PI
 
 //pentru toate chestiile astea, trebuie sa definesc un patrat, o grila in care sa imi tin patratele
 //o functie care sa imi deseneze patratele si sa mi le arate pe stream
+
+
 //o functie care sa vada ce culori se afla in cadrul fiecarui patrat si sa compare cu albastru si rosu
 //o functie care se uita in grila de patrate si numara cate patrate sunt in fiecare dintre sectiunile facute de linia de mai sus
 //apoi la sfarsit compara numarul de patrate din fiecare sectiune si iti da cazul
-class pipelinedarscrisdeivi(resolutionx: Int, resolutiony: Int): OpenCvPipeline(){
+class pipelinedarscrisdeivi(resolutionx: Int, resolutiony: Int) : OpenCvPipeline() {
 
     //iti dau eu sa citesti si sa iti explic cate ceva despre documentatia de pipeline, opencv si frameuri
     //functia in care lucrez si verific lucrurile din frame (de acum, mat = frameul cu care lucrez)
+    val frametohsv = Mat()
+    val finalframe = Mat()
     override fun processFrame(input: Mat): Mat {
 
-        if(input.empty()){
+        if (input.empty()) {
             return input
         }
         //vreauframe pur si simplu ma ajuta sa controlez daca fac grila si patratele din dash
-        if(vreauframe){
-
+        if (vreauframe) {
             //imi mut frameul din rgb in hsv pentru a prelucra culorile
-            val frametohsv = Mat()
-            input.copyTo(frametohsv)
-            Imgproc.cvtColor(frametohsv, frametohsv, Imgproc.COLOR_RGB2HSV)
+
+            ///input.copyTo(frametohsv)
+            Imgproc.cvtColor(input, frametohsv, Imgproc.COLOR_RGB2HSV)
 
             //la fel ca la frame, aici controlez din dash daca desenez patratele
-            val finalframe = Mat()
-            if(desenezpatrate){
-
+            if (desenezpatrate) {
                 frametohsv.copyTo(finalframe)
             }
 
@@ -64,33 +78,44 @@ class pipelinedarscrisdeivi(resolutionx: Int, resolutiony: Int): OpenCvPipeline(
             var patrateladreapta: Int = 0
 
             //aici imi pun patratele in grila, ca sa intelegi, o sa iti arat o foaie [CAND VII LA ROBO]
-            for(patratpelungime in -patratepelungime+offx .. patratepelungime+offx step step ){
-                for(patratpelatime in -patratepelatime+offy .. patratepelatime+offy step step){
+            for (patratpelungime in -patratepelungime + offx..patratepelungime + offx step step) {
+                for (patratpelatime in -patratepelatime + offy..patratepelatime + offy step step) {
 
                     //patratul efectiv
-                    val patrat = frametohsv[patratpelungime, patratpelatime] ?: continue
+                    val patrat = frametohsv[patratpelatime, patratpelungime] ?: continue
+                    val tp = TelemetryPacket()
+                    tp.put("patrat", "${patrat[0]/ 255.0 * PI * 2}, ${patrat[1]}, ${patrat[2]}")
+                    FtcDashboard.getInstance().sendTelemetryPacket(tp)
 
                     //verific culoarea
-                    if(operatiicupatrate.verificaculoarea(patrat)){
+                    if (operatiicupatrate.verificaculoarea(patrat)) {
                         //verific unde sunt patratele in functie de o linie in care impart frameul
-                        if(patratpelungime > cazuldemijloc)
+                        if (patratpelungime > cazuldemijloc)
                             patrateladreapta++
                         else
                             patrateincentru++
 
                         //daca desenez patrate, le pun culorile respective (daca am patrat de culoare dorita, il pun pe alb
-                        if(desenezpatrate)
-                            Imgproc.rectangle(finalframe, Rect(patratpelungime, patratpelatime, step, step), Scalar(
-                                max(patrat[0]-10.0, 0.0),
-                                max(patrat[0]-10.0, 0.0),
-                                max(patrat[0]-10.0, 0.0),
-                            ), -1
+                        if (desenezpatrate)
+                            Imgproc.rectangle(
+                                finalframe,
+                                Rect(patratpelungime, patratpelatime, step, step),
+                                Scalar(255.0, 255.0, 255.0), -1
                             )
 
-                    }else{
+                    } else {
                         //daca nu e ce culoare vreau dar totusi desenez patrate, desenez patratul de culoare neagra
-                        if(desenezpatrate){
-                            Imgproc.rectangle(finalframe, Rect(patratpelungime, patratpelatime, step, step), Scalar(255.0, 255.0, 255.0))
+                        if (desenezpatrate) {
+                            Imgproc.rectangle(
+                                finalframe,
+                                Rect(patratpelungime, patratpelatime, step, step),
+                                Scalar(
+                                    max(patrat[0] - 10.0, 0.0),
+                                    max(patrat[0] - 10.0, 0.0),
+                                    max(patrat[0] - 10.0, 0.0),
+                                ),
+                                -1
+                            )
                         }
 
                     }
@@ -98,17 +123,18 @@ class pipelinedarscrisdeivi(resolutionx: Int, resolutiony: Int): OpenCvPipeline(
                     lom.telemetry.addData("Patrate in Mijloc", patrateincentru)
                     lom.telemetry.addData("Patrate in centru", patrateladreapta)
                     lom.telemetry.update()
+                    Imgproc.line(finalframe, Point(0.0, 100.0), Point(100.0, 100.0),Scalar(255.0, 0.0, 0.0), 100 )
 
                     //autoresultul, iti explic de ce sunt cum sunt cazurile [CAND VII LA ROBO]
-                    autoresult = if(autored){
-                        if(patrateladreapta > patrateminrosii)
+                    autoresult = if (autored) {
+                        if (patrateladreapta > patrateminrosii)
                             0
                         else if (patrateincentru > patrateminrosii)
                             1
                         else
                             2
-                    }else{
-                        if(patrateladreapta > patrateminalbastre)
+                    } else {
+                        if (patrateladreapta > patrateminalbastre)
                             2
                         else if (patrateincentru > patrateminalbastre)
                             1
@@ -121,7 +147,13 @@ class pipelinedarscrisdeivi(resolutionx: Int, resolutiony: Int): OpenCvPipeline(
 
                     //linia care imi imparte cazurile (dreapta centru stanga)
                     val w = frametohsv.width()
-                    Imgproc.line(finalframe, Point(cazuldemijloc, 80.0), Point(cazuldemijloc, 320.0), Scalar(182.0, 23.0, 240.0), 4)
+                    Imgproc.line(
+                        finalframe,
+                        Point(cazuldemijloc, 80.0),
+                        Point(cazuldemijloc, 320.0),
+                        Scalar(182.0, 23.0, 240.0),
+                        4
+                    )
                 }
             }
 
@@ -130,51 +162,56 @@ class pipelinedarscrisdeivi(resolutionx: Int, resolutiony: Int): OpenCvPipeline(
             } else {
                 frametohsv
             }
-        }
-        else{
+        } else {
             return input
         }
+
 
 
     }
 }
 
-object operatiicupatrate{
-    fun verificaculoarea(patrat: DoubleArray): Boolean{
-        return if(autored){
+object operatiicupatrate {
+    fun verificaculoarea(patrat: DoubleArray): Boolean {
+        return if (autored) {
             isred(patrat)
-        } else{
+        } else {
             isblue(patrat)
         }
     }
 
-    fun isred(patrat: DoubleArray): Boolean{
-
+    fun isred(patrat: DoubleArray): Boolean {
         //transform culorile primite din rgb in hsv o sa iti arat cum functioneaza [CAND VII LA ROBO]
-        val diferentadeunghirosu: Double = PI/9
-        val saturatierosieminima: Double = 50.0
-        val valoarerosiemaxima: Double = 35.0
 
-        val h = (patrat[0]/255.0) * PI * 2
+        val h = (patrat[0] / 255.0) * PI * 2
         val s = patrat[1]
         val v = patrat[2]
 
-        return (h <= 2*PI - diferentadeunghirosu || h <= diferentadeunghirosu) && s > saturatierosieminima && v < valoarerosiemaxima
+        return abs(angDiff(h, rosuAng)) <= rosuMaxDif &&
+                s > saturatierosieminima &&
+                v > valoarerosieminima
     }
 
-    fun isblue(patrat: DoubleArray): Boolean{
+    fun isblue(patrat: DoubleArray): Boolean {
 
         //transform culorile primite din rgb in hsv o sa iti arat cum functioneaza [CAND VII LA ROBO]
-        val diferentadeunghialbastruinstanga: Double = PI/6
-        val diferentadeunghialbastruindreapta: Double = PI/12
-        val saturatiealbastraminima: Double = 50.0
-        val valoarealbastramaxima: Double = 35.0
+        val diferentadeunghialbastruinstanga: Double = PI / 6
+        val diferentadeunghialbastruindreapta: Double = PI / 12
 
-        val h = (patrat[0]/255.0) * PI * 2
+
+        val h = (patrat[0] / 255.0) * PI * 2
         val s = patrat[1]
         val v = patrat[2]
 
-        return (h >= 4*PI/3 - diferentadeunghialbastruinstanga || h <= 4*PI/3 + diferentadeunghialbastruindreapta) && s > saturatiealbastraminima && v < valoarealbastramaxima
+        return abs(angDiff(h, alabastruAng)) <= alabastruMaxDiff &&
+                s > saturatiealbastraminima &&
+                v > valoarealbastramaxima
+    }
+    fun floatMod(o1: Double, o2: Double): Double {
+        return o1 - floor(o1 / o2) * o2
+    }
+    fun angDiff(o1: Double, o2: Double): Double {
+        return floatMod(o2 - o1 + PI, PI * 2) - PI
     }
 }
 

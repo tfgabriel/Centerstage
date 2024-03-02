@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.autonom
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import org.firstinspires.ftc.teamcode.DeclarareMotoare.lom
 import org.firstinspires.ftc.teamcode.camerathings.Camera
 import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.autored
 import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.autoresult
@@ -11,7 +12,6 @@ import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.waitforopen
 import org.firstinspires.ftc.teamcode.camerathings.pipelinedarscrisdeivi
 import org.firstinspires.ftc.teamcode.varsandfuncs.vars.camera
 import org.firstinspires.ftc.teamcode.varsandfuncs.vars.dashboard
-import org.firstinspires.ftc.teamcode.varsandfuncs.vars.lom
 import org.openftc.easyopencv.OpenCvPipeline
 import java.lang.Thread.sleep
 

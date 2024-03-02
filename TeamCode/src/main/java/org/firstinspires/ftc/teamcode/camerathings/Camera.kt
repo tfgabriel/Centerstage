@@ -3,11 +3,12 @@ package org.firstinspires.ftc.teamcode.camerathings
 import com.acmerobotics.dashboard.FtcDashboard
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
+import org.firstinspires.ftc.teamcode.DeclarareMotoare.lom
+import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.cameraRotation
 import org.firstinspires.ftc.teamcode.varsandfuncs.vars.hardwareMap
 import org.openftc.easyopencv.OpenCvCameraFactory
 import org.openftc.easyopencv.OpenCvPipeline
 import org.openftc.easyopencv.OpenCvWebcam
-import org.firstinspires.ftc.teamcode.varsandfuncs.vars.lom
 import org.openftc.easyopencv.OpenCvCamera
 import java.lang.Thread.sleep
 
@@ -23,7 +24,7 @@ class Camera(name: String, resolutionx: Int, resolutiony: Int, pipeline: OpenCvP
     var opened: Boolean = false
 
     //ca sa controlez streamu pe dash
-    private var dashboardStreaming = false
+    private var dashboardStreaming = true
 
     init{
 
@@ -43,8 +44,8 @@ class Camera(name: String, resolutionx: Int, resolutiony: Int, pipeline: OpenCvP
 
 
             override fun onOpened() {
-                //imi setez la ce dau stream pe dash
-                camera.startStreaming(resolutionx, resolutiony)
+                //imi setez la ce dau stream pe dashqq
+                camera.startStreaming(resolutionx, resolutiony, cameraRotation)
                 if (streaming) {
                     //dau stream pe dash
                     FtcDashboard.getInstance().startCameraStream(camera, 30.0)

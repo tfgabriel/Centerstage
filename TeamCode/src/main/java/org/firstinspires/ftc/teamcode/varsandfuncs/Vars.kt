@@ -9,6 +9,5 @@ object vars {
 
     lateinit var hardwareMap: HardwareMap
     lateinit var dashboard: FtcDashboard
-    lateinit var lom: LinearOpMode
     lateinit var camera: Camera
 }

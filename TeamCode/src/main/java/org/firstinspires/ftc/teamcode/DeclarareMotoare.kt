@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.Servo
+import com.qualcomm.robotcore.util.ElapsedTime
+import kotlinx.coroutines.withTimeoutOrNull
 import org.firstinspires.ftc.teamcode.varsandfuncs.vars.hardwareMap
 
 
@@ -36,11 +38,14 @@ object DeclarareMotoare{
     @JvmStatic
     lateinit var lom : LinearOpMode
 
+    lateinit var timptrecut: ElapsedTime
+
 
     @JvmStatic
-    fun initMotoare(lom : LinearOpMode) {
+    fun initMotoare(lom : LinearOpMode, timptrecut : ElapsedTime) {
         this.lom = lom
         hardwareMap = lom.hardwareMap
+        this.timptrecut = timptrecut
         LF = hardwareMap.dcMotor["LF"]
         LB = hardwareMap.dcMotor["LB"]
         RF = hardwareMap.dcMotor["RF"]
@@ -69,7 +74,7 @@ object DeclarareMotoare{
         RF.direction = DcMotorSimple.Direction.REVERSE
         RB.direction = DcMotorSimple.Direction.REVERSE
 
-        RidicareIntake.position = 0.33
+        RidicareIntake.position = 0.64
 
         ServoSlideStanga = hardwareMap.servo["ServoSlideStanga"]
         ServoSlideDreapta = hardwareMap.servo["ServoSlideDreapta"]
@@ -77,9 +82,7 @@ object DeclarareMotoare{
 
         ServoSlideDreapta.direction = Servo.Direction.REVERSE
 
-        ServoBucket.position = 0.25
-         ServoSlideDreapta.position = 0.15
-        ServoSlideStanga.position = 0.52
+
 
 
 
