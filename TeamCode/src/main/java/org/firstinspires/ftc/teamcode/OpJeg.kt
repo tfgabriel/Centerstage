@@ -97,7 +97,7 @@ class OpJeg : LinearOpMode() {
         var slidConditionUp : Boolean = false
         var slidConditionDown : Boolean = false
 
-
+//wow
 
 
         waitForStart()
