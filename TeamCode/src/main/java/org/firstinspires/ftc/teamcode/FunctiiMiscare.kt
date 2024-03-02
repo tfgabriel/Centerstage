@@ -6,7 +6,9 @@ import org.firstinspires.ftc.teamcode.DeclarareMotoare.LF
 import org.firstinspires.ftc.teamcode.DeclarareMotoare.RB
 import org.firstinspires.ftc.teamcode.DeclarareMotoare.RF
 import org.firstinspires.ftc.teamcode.DeclarareMotoare.timptrecut
+import org.firstinspires.ftc.teamcode.hardware.drivetrain
 import org.firstinspires.ftc.teamcode.varsandfuncs.mathfuncs
+import kotlin.math.PI
 
 
 object
@@ -48,35 +50,20 @@ FunctiiMiscare{
     }
 
     //
-    fun move(maxtime: Double, autoresult: Int){
+    fun automove(maxtime: Double, autoresult: Int){
 
+        var drivetrainmove: drivetrain = drivetrain()
 
         if(autoresult == 0){
             //ma duc la tras
-            DeclarareMotoare.timptrecut.startTime()
-            while(maxtime > timptrecut.time()){
-                LF.power = mathfuncs.min(timptrecut.seconds() / maxtime, 1.0)
-                RB.power = mathfuncs.min(timptrecut.seconds() / maxtime, 1.0)
-            }
-            DeclarareMotoare.timptrecut.reset()
+            drivetrainmove.diagmove(5 * PI / 12, maxtime)
+
         } else if(autoresult == 1){
             //ma duc in fata
-            DeclarareMotoare.timptrecut.startTime()
-            while(maxtime > DeclarareMotoare.timptrecut.time()){
-                LF.power = mathfuncs.min(timptrecut.seconds() / maxtime, 1.0)
-                LB.power = mathfuncs.min(timptrecut.seconds() / maxtime, 1.0)
-                RF.power = mathfuncs.min(timptrecut.seconds() / maxtime, 1.0)
-                RB.power = mathfuncs.min(timptrecut.seconds() / maxtime, 1.0)
-            }
-            DeclarareMotoare.timptrecut.reset()
+            drivetrainmove.movefwd(maxtime + 50.0)
         } else {
             //ma duc in alta parte
-            DeclarareMotoare.timptrecut.startTime()
-            while(maxtime > timptrecut.time()){
-                RF.power = mathfuncs.min(timptrecut.seconds() / maxtime, 1.0)
-                LB.power = mathfuncs.min(timptrecut.seconds() / maxtime, 1.0)
-            }
-            DeclarareMotoare.timptrecut.reset()
+            drivetrainmove.diagmove(7 * PI / 12, maxtime)
         }
     }
 

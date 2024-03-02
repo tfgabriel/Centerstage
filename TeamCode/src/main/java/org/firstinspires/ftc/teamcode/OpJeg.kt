@@ -161,7 +161,7 @@ class OpJeg : LinearOpMode() {
                 Slide.mode = DcMotor.RunMode.RUN_TO_POSITION
                 Slide.power = 0.75
             }
-            else if(Slide.currentPosition > 2040 && slidConditionDown == false){
+            else if(Slide.currentPosition > 2040 && !slidConditionDown){
                 slidConditionUp = false
                 Slide.power = 0.0
             }

@@ -15,37 +15,42 @@ import org.firstinspires.ftc.teamcode.varsandfuncs.vars.dashboard
 import org.openftc.easyopencv.OpenCvPipeline
 import java.lang.Thread.sleep
 
-fun autonomsetup(lom: LinearOpMode, isred: Boolean): Int {
+object setup {
 
-    autored = isred
-    dashboard = FtcDashboard.getInstance()
 
-    if(folosesccamera){
-        var pipeline: OpenCvPipeline
-        pipeline = pipelinedarscrisdeivi(640, 480)
-        camera = Camera(cameraname, 640, 480, pipeline, streaming = true, waitforopen = true)
-    }
+    fun autonomsetup(lom: LinearOpMode, isred: Boolean): Int {
 
-    val result = checkCamera()
-    lom.waitForStart()
+        autored = isred
+        dashboard = FtcDashboard.getInstance()
 
-    if(folosesccamera){
-        camera.stop()
-    }
-
-    return result
-}
-
-fun checkCamera(): Int{
-
-    var loadautoresult: Int = 0
-
-    if(folosesccamera){
-        while(!lom.isStarted){
-            loadautoresult =  autoresult
-            sleep(5)
+        if (folosesccamera) {
+            var pipeline: OpenCvPipeline
+            pipeline = pipelinedarscrisdeivi(640, 480)
+            camera = Camera(cameraname, 640, 480, pipeline, streaming = true, waitforopen = true)
         }
+
+        val result = checkCamera()
+        lom.waitForStart()
+
+        if (folosesccamera) {
+            camera.stop()
+        }
+
+        return result
     }
 
-    return loadautoresult
+    fun checkCamera(): Int {
+
+        var loadautoresult: Int = 0
+
+        if (folosesccamera) {
+            while (!lom.isStarted) {
+                loadautoresult = autoresult
+                sleep(5)
+            }
+        }
+
+        return loadautoresult
+    }
+
 }

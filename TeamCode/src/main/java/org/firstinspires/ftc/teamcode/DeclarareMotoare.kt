@@ -42,10 +42,10 @@ object DeclarareMotoare{
 
 
     @JvmStatic
-    fun initMotoare(lom : LinearOpMode, timptrecut : ElapsedTime) {
+    fun initMotoare(lom : LinearOpMode) {
         this.lom = lom
         hardwareMap = lom.hardwareMap
-        this.timptrecut = timptrecut
+
         LF = hardwareMap.dcMotor["LF"]
         LB = hardwareMap.dcMotor["LB"]
         RF = hardwareMap.dcMotor["RF"]
@@ -81,10 +81,6 @@ object DeclarareMotoare{
 
 
         ServoSlideDreapta.direction = Servo.Direction.REVERSE
-
-
-
-
 
     }
 }
