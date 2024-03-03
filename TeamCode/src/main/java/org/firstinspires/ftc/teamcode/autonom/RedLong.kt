@@ -14,6 +14,12 @@ class RedLong: LinearOpMode(){
 
         setup.autonomsetup(this, isred = true)
         trajectory.automove(autoresult, isRed = true)
-        trajectory.trajRedLong()
+        if(autoresult == 0){
+            trajectory.trajRedLong0()
+        } else if (autoresult == 1){
+            trajectory.trajRedLong1()
+        } else {
+            trajectory.trajRedLong2()
+        }
     }
 }

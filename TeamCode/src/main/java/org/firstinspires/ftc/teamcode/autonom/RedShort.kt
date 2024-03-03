@@ -15,7 +15,12 @@ class RedShort : LinearOpMode() {
         DeclarareMotoare.initMotoare(this)
 
         autonomsetup(this, isred = true)
-        trajectory.automove(autoresult, isRed = true)
-        trajectory.trajRedShort()
+        if(autoresult == 0){
+            trajectory.trajRedShort0()
+        } else if (autoresult == 1){
+            trajectory.trajRedShort1()
+        } else {
+            trajectory.trajRedShort2()
+        }
     }
 }

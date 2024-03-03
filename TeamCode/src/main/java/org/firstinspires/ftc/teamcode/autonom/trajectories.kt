@@ -2,11 +2,17 @@ package org.firstinspires.ftc.teamcode.autonom
 
 import org.firstinspires.ftc.teamcode.autonom.autovars.backboardtoparkTime
 import org.firstinspires.ftc.teamcode.autonom.autovars.bluetrastobackAngle
+import org.firstinspires.ftc.teamcode.autonom.autovars.finishtrasTime
 import org.firstinspires.ftc.teamcode.autonom.autovars.frontcaseTime
+import org.firstinspires.ftc.teamcode.autonom.autovars.fronttotrasAngle
+import org.firstinspires.ftc.teamcode.autonom.autovars.fronttotrasTime
 import org.firstinspires.ftc.teamcode.autonom.autovars.intakedropTime
 import org.firstinspires.ftc.teamcode.autonom.autovars.nottrascaseTime
+import org.firstinspires.ftc.teamcode.autonom.autovars.nottrastotrasTime
+import org.firstinspires.ftc.teamcode.autonom.autovars.outtakedropTime
 import org.firstinspires.ftc.teamcode.autonom.autovars.parkfwdTime
 import org.firstinspires.ftc.teamcode.autonom.autovars.redtrastobackAngle
+import org.firstinspires.ftc.teamcode.autonom.autovars.rotationTime
 import org.firstinspires.ftc.teamcode.autonom.autovars.slidemaxPos
 import org.firstinspires.ftc.teamcode.autonom.autovars.slideminPos
 import org.firstinspires.ftc.teamcode.autonom.autovars.starttonottrasAngle
@@ -26,19 +32,72 @@ class trajectories {
     var intake: intake = intake()
     var outtake: outtake = outtake()
     var slides: slides = slides()
-    fun trajRedShort(){
+    fun trajRedShort0(){
+        automove(0, isRed = true)
+        drivetrain.rotateleft(rotationTime)
+        drivetrain.rotateleft(rotationTime)
         drivetrain.movefwd(trasmovefwdTime)
         putpixelonback()
         buildparking(isRed = true)
     }
 
-    fun trajRedLong(){
+    fun trajRedShort1(){
+        automove(1, isRed = true)
+        drivetrain.movefwd(trasmovefwdTime)
+        putpixelonback()
+        buildparking(isRed = true)
+    }
+
+    fun trajRedShort2(){
+        automove(2, isRed = true)
+        drivetrain.movefwd(trasmovefwdTime)
+        putpixelonback()
+        buildparking(isRed = true)
+    }
+
+    fun trajRedLong0(){
+        automove(0, isRed = true)
+        drivetrain.rotateleft(rotationTime)
+        drivetrain.rotateleft(rotationTime)
+        drivetrain.strafeleft(finishtrasTime)
         drivetrain.diagmove(redtrastobackAngle, trastobackboardTime)
         putpixelonback()
         buildparking(isRed = true)
     }
 
-    fun trajBlueShort(){
+    fun trajRedLong1(){
+        automove(1, isRed = true)
+        drivetrain.rotateright(rotationTime)
+        drivetrain.diagmove(fronttotrasAngle, fronttotrasTime)
+        drivetrain.diagmove(redtrastobackAngle, trastobackboardTime)
+        putpixelonback()
+        buildparking(isRed = true)
+    }
+
+    fun trajRedLong2(){
+        automove(2, isRed = true)
+        drivetrain.diagmove(starttonottrasAngle, nottrastotrasTime)
+        drivetrain.diagmove(redtrastobackAngle, trastobackboardTime)
+        putpixelonback()
+        buildparking(isRed = true)
+    }
+
+    fun trajBlueShort0(){
+        automove(0, isRed = false)
+        drivetrain.rotateleft(rotationTime)
+        drivetrain.rotateleft(rotationTime)
+        drivetrain.movefwd(trasmovefwdTime)
+        putpixelonback()
+        buildparking(isRed = false)
+    }
+
+    fun trajBlueShort1(){
+        drivetrain.movefwd(trasmovefwdTime)
+        putpixelonback()
+        buildparking(isRed = false)
+    }
+
+    fun trajBlueShort2(){
         drivetrain.movefwd(trasmovefwdTime)
         putpixelonback()
         buildparking(isRed = false)
@@ -62,7 +121,7 @@ class trajectories {
     private fun putpixelonback(){
         slides.extend(slidemaxPos)
         outtake.rotatefwd()
-        outtake.drop(intakedropTime)
+        outtake.drop(outtakedropTime)
         outtake.resetposition()
         slides.retract(slideminPos)
     }
@@ -76,13 +135,19 @@ class trajectories {
         if(autoresult == 0){
             //ma duc la tras
             drivetrain.diagmove(starttotrasAngle, trascaseTime)
+            drivetrain.rotateright(rotationTime)
+            intake.droppixel(intakedropTime)
+
 
         } else if(autoresult == 1){
             //ma duc in fata
             drivetrain.movefwd(frontcaseTime)
+            intake.droppixel((intakedropTime))
         } else {
             //ma duc in alta parte
             drivetrain.diagmove(starttonottrasAngle, nottrascaseTime)
+            drivetrain.rotateleft(rotationTime)
+            intake.droppixel(intakedropTime)
         }
     }
 }

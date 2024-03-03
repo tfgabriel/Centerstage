@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.DeclarareMotoare
 import org.firstinspires.ftc.teamcode.camerathings.CameraObjects
+import org.firstinspires.ftc.teamcode.camerathings.CameraObjects.autoresult
 
 @Autonomous
 class BlueLong: LinearOpMode() {
@@ -13,7 +14,7 @@ class BlueLong: LinearOpMode() {
         DeclarareMotoare.initMotoare(this)
 
         setup.autonomsetup(this, isred = false)
-        trajectory.automove(CameraObjects.autoresult, isRed = false)
-        trajectory.trajBlueShort()
+        trajectory.automove(autoresult, isRed = false)
+        trajectory.trajBlueLong()
     }
 }
