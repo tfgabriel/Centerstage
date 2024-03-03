@@ -17,7 +17,6 @@ import java.lang.Thread.sleep
 
 object setup {
 
-
     fun autonomsetup(lom: LinearOpMode, isred: Boolean): Int {
 
         autored = isred
@@ -39,7 +38,7 @@ object setup {
         return result
     }
 
-    fun checkCamera(): Int {
+    private fun checkCamera(): Int {
 
         var loadautoresult: Int = 0
 

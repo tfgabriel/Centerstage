@@ -49,26 +49,6 @@ FunctiiMiscare{
 
     }
 
-    //
-    fun automove(maxtime: Double, autoresult: Int){
-
-        var drivetrainmove: drivetrain = drivetrain()
-
-        if(autoresult == 0){
-            //ma duc la tras
-            drivetrainmove.diagmove(5 * PI / 12, maxtime)
-
-        } else if(autoresult == 1){
-            //ma duc in fata
-            drivetrainmove.movefwd(maxtime + 50.0)
-        } else {
-            //ma duc in alta parte
-            drivetrainmove.diagmove(7 * PI / 12, maxtime)
-        }
-    }
-
-
-
     fun MiscareDeRotire(putere: Double, timp: Int = 0){
 
 

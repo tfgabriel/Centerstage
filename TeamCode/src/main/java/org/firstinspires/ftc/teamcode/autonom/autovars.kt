@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonom
 
+import kotlin.math.PI
+
 object autovars {
 
     @JvmField
@@ -46,4 +48,16 @@ object autovars {
 
     @JvmField
     var parkfwdTime: Double = 10.0
+
+    @JvmField
+    var bluetrastobackAngle: Double = 2 * PI / 3
+
+    @JvmField
+    var redtrastobackAngle: Double = PI /3
+
+    @JvmField
+    var starttotrasAngle: Double = 5 * PI / 12
+
+    @JvmField
+    var starttonottrasAngle: Double = 7 * PI / 12
 }
