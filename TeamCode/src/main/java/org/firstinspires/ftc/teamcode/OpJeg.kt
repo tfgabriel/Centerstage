@@ -50,8 +50,9 @@ object  Teste{
 
 }
 
+//david bataia pe care o sa ti-o iei maica......
 
-@TeleOp(name="Lu adi nu-i placea numele vechi 3:c")
+@TeleOp(name="Burunyuu")
 
 class OpJeg : LinearOpMode() {
     @Throws(InterruptedException::class)
@@ -63,11 +64,11 @@ class OpJeg : LinearOpMode() {
         val LB = hardwareMap.dcMotor["LB"]
         val RF = hardwareMap.dcMotor["RF"]
         val RB = hardwareMap.dcMotor["RB"]
+
         val Slide = hardwareMap.get(DcMotorEx::class.java, "Slide")
         val RidicareIntake = hardwareMap.servo["RidicareIntake"]
         val Intake = hardwareMap.get(DcMotorEx::class.java, "Intake")
-        val ticks = 2786.2
-        var newTarget: Double
+
         val ServoBucket = hardwareMap.servo["ServoBucket"]
         val RoataBucket = hardwareMap.crservo["RoataBucket"]
 
@@ -75,6 +76,7 @@ class OpJeg : LinearOpMode() {
         LB.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         RF.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         RB.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
+
         Slide.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         Slide.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         Slide.mode = DcMotor.RunMode.RUN_USING_ENCODER
@@ -124,24 +126,42 @@ class OpJeg : LinearOpMode() {
             RB.power = backRightPower * RBC * Incetinire
 
 
+            //intake and bucket
 
+            //move intake up or down
+
+            while(gamepad2.dpad_left){
+
+                RidicareIntake.position++
+            }
+
+            while(gamepad2.dpad_right){
+                RidicareIntake.position--
+            }
+
+            //kick pixel out of intake
             if(gamepad2.left_trigger >= 0.01){
                 Intake.power = -0.7
             }
             else{
-                if(gamepad2.right_trigger >= 0.01){
-                    Intake.power= 0.7
-                    RoataBucket.power = -1.0
-                }
-                else{
-                    Intake.power = 0.0
-                }
+                Intake.power = 0.0
             }
+
+            //take pixel
+            if(gamepad2.right_trigger >= 0.01){
+                Intake.power= 0.7
+                RoataBucket.power = -1.0
+            }
+            else{
+                Intake.power = 0.0
+                RoataBucket.power = 0.0
+            }
+
+            //drop pixel
             if(gamepad2.dpad_down){
                 RoataBucket.power = 0.7
-
             }
-            else if(gamepad2.dpad_up){
+            else{
                 RoataBucket.power = 0.0
             }
 
